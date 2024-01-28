@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getAllSearch } from '../../config/firebase'
-import WeatherNavbar from '../weathernavbar';
 import './index.css'
-import { Link } from 'react-router-dom';
 const AllHistory = () => {
   const [history, setHistory] = useState([])
   console.log(history);
@@ -15,11 +13,7 @@ const AllHistory = () => {
   }, [])
   return (
     <div className='bg-dark min-h-[100vh]'>
-      <div className='container-fluid searc text-center p-3 relative'>
-            <h1 className='text-center text-white text-[25px]  font-bold p-2'>Weather Search</h1>
-            <Link to={'/yourSearch'} className='text-[16px] font-bold absolute bottom-7 md:bottom-8 underline  text-white right-5 md:right-7'>History</Link>
-      </div>
-      {/* <WeatherNavbar /> */}
+      
       <div className='max-w-[600px]  mx-auto'>
         <div className='mt-20 mx-5 pb-10'>
           {history.map((sea) => (
