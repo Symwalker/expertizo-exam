@@ -27,10 +27,9 @@ const Home = () => {
                 console.log(err);
                 setError(true)
             })
-    }, [search])
+    }, [])
 
     const handleForm = (e) => {
-        // console.log(inputValue);
         e.preventDefault()
         if (!inputValue) {
             return alert("field is empty")
@@ -38,7 +37,6 @@ const Home = () => {
         }
         setCallApi(!callApi)
     }
-    // console.log("whater Info ",WheatherInfo);
     const searchresult = async () => {
         const data = {
             name: WheatherInfo.name,
@@ -46,11 +44,26 @@ const Home = () => {
             temp: WheatherInfo.main.temp,
 
         }
-        setSearch(inputValue)
-        await saveSearchName(data)
-        // setSearch('')
-        // setInputValue('')
-
+        const query = inputValue || "karachi";
+        axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=77e48f26ea7bf5f3590ff253f04319a0&units=metric`)
+        .then((res) => {
+            setWheatherInfo(res.data);
+            setError(false);
+            console.log(res.data);
+    
+            const data = {
+                name: res.data.name,
+                country: res.data.sys.country,
+                temp: res.data.main.temp,
+            };
+            saveSearchName(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            setError(true);
+        });
+      
     }
     return (
         <div>
@@ -77,25 +90,25 @@ const Home = () => {
                 </button>
             </div>
 
-            <div className='p-2 md:p-0'>
+            <div className='p-2 md:p-0 '>
                 <div className='relative max-w-[1200px] mx-auto mt-3 '>
-                    <img src={bg} alt="" className=' w-full absolute h-[350px] sm:h-[370px] md:h-[400px] lg:h-[500px] md:mx-auto  rounded-[20px] object-cover   left-0 right-0  ' />
+                    <img src={bg} alt="" className=' w-full absolute h-[500px]  sm:h-[370px] md:h-[400px] lg:h-[500px] md:mx-auto  rounded-[20px] object-cover   left-0 right-0  ' />
                     <div className='z-50  relative h-[350px] sm:h-[370px] md:h-[400px] lg:h-[500px]  '>
                         <h2 className='text-white text-center text-[50px] font-bold pt-6'>{WheatherInfo ? WheatherInfo.name : "State Name"}</h2>
-                        <div className='mt-2 md:mt-10 flex md:flex-row flex-col justify-between items-center w-[80%] mx-auto'>
-                            <h2 className='tempHeading'>{WheatherInfo ? WheatherInfo.main.temp.toFixed(0) : "state temperature"}℃</h2>
+                        <div className=' md:mt-10 flex md:flex-row flex-col justify-between items-center w-[80%] mx-auto'>
+                            <h2 className='tempHeading text-[90px] md:text-[120px] '>{WheatherInfo ? WheatherInfo.main.temp.toFixed(0) : "state temperature"}℃</h2>
                             <div className='flex flex-wrap md:flex-col gap-3'>
                                 <div className='flex  items-center gap-2'>
                                 <WiHumidity color='black' size={60} />
-                                    <span className='md:text-[29px] text-[22px] text-white text-bold'>Humidity :{WheatherInfo ? WheatherInfo.main.humidity : "state humidity"}</span>
+                                    <span className='md:text-[29px] text-[18px] text-white text-bold'>Humidity :{WheatherInfo ? WheatherInfo.main.humidity : "state humidity"}</span>
                                 </div>
                                 <div className='flex items-center gap-2'>
                                 <BsThermometerHalf color='red' size={60} />
-                                    <span className='md:text-[29px] text-[22px] text-white text-bold'>Pressure :{WheatherInfo ? WheatherInfo.main.pressure : "state pressure"}</span>
+                                    <span className='md:text-[29px] text-[18px] text-white text-bold'>Pressure :{WheatherInfo ? WheatherInfo.main.pressure : "state pressure"}</span>
                                 </div>
                                 <div className='flex items-center gap-2'>
                                 <RiCloudWindyLine color='brown' size={60} />
-                                    <span className='md:text-[29px] text-[22px] text-white text-bold'>Wind: {WheatherInfo ? WheatherInfo.wind.speed : "User Public Repos"}</span>
+                                    <span className='md:text-[29px] text-[18px] text-white text-bold'>Wind: {WheatherInfo ? WheatherInfo.wind.speed : "User Public Repos"}</span>
                                 </div>
                                 
                             </div>
